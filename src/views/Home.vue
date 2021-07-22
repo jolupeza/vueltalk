@@ -1,18 +1,41 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container mx-auto">
+      <button v-if="!user" @click="doLogin" class="">Login with Google</button>
+      <template v-else>
+        <button @click="doLogout" class="">Logout</button>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { fb, auth } from '@/firebase'
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      user: null
+    }
+  },
+  methods: {
+    async doLogin () {
+      try {
+        const provider = new fb.auth.GoogleAuthProvider()
+        const user = await auth.signInWithPopup(provider)
+        this.user = user.user
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async doLogout () {
+      try {
+        await auth.signOut()
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 }
 </script>
