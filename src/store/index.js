@@ -6,6 +6,8 @@ import rooms from '@/store/rooms'
 import user from '@/store/user'
 import utils from '@/store/utils'
 
+import { auth } from './../firebase'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -14,8 +16,10 @@ const store = new Vuex.Store({
   mutations: {
   },
   actions: {
-    checkAuth () {
-
+    checkAuth ({ commit }) {
+      auth.onAuthStateChanged(function (user) {
+        commit('user/SET_USER', user)
+      })
     }
   },
   modules: {
