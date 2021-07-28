@@ -58,6 +58,9 @@ const actions = {
   async doLogout ({ commit }) {
     await auth.signOut()
     commit('SET_USER', null)
+  },
+  async doReset (context, email) {
+    await auth.sendPasswordResetEmail(email)
   }
 }
 
